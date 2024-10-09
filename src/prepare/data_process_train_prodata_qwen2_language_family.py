@@ -1,0 +1,414 @@
+import os
+os.environ["WANDB_API_KEY"]='c90fecd56f771e43bd9fb69a0909cc7187b40f50'
+import copy
+import json
+import os
+import torch
+import logging
+import argparse
+from transformers.generation.utils import LogitsProcessorList
+from transformers.generation.logits_process import LogitsProcessor
+
+from tqdm import tqdm
+import torch.distributed as dist
+from torch.utils.data import Dataset, DataLoader, Sampler
+import wandb
+import transformers
+from typing import Sequence
+import datasets
+import shutil
+import json
+import random
+
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel
+
+sampled_ids = set()
+class WeightedRandomSampler(Sampler[int]):
+    def __init__(self, weights: Sequence[float], num_samples: int,
+                 replacement: bool = False, manual_seed=3407) -> None:
+        if not isinstance(num_samples, int) or isinstance(num_samples, bool) or num_samples <= 0 or num_samples > len(weights):
+            raise ValueError("num_samples should be a positive integer value less than or equal to len(weights), but got num_samples={}".format(num_samples))
+        if not isinstance(replacement, bool):
+            raise ValueError("replacement should be a boolean value, but got replacement={}".format(replacement))
+        global sampled_ids
+        self.weights = torch.as_tensor(weights, dtype=torch.double)
+        self.num_samples = num_samples
+        self.replacement = False
+        self.generator = torch.Generator()
+        self.generator.manual_seed(manual_seed)
+        self.rand_list = torch.multinomial(self.weights, self.weights.shape[0], self.replacement, generator=self.generator).tolist()
+        self.pos = 0
+        self.sampled_ids = sampled_ids
+
+    def __iter__(self):
+        while self.pos < self.num_samples:
+            idx = self.rand_list[self.pos]
+            self.pos += 1
+            self.sampled_ids.add(idx)
+            yield idx
+
+    def __len__(self) -> int:
+        return self.num_samples
+
+    def update_dynamic_weight(self, new_weights: Sequence[float]):
+        if len(new_weights) != len(self.weights):
+            raise ValueError("Length of new_weights must match the current weights")
+
+        self.weights = torch.as_tensor(new_weights, dtype=torch.double)
+
+        available_indices = list(set(range(len(self.weights))) - self.sampled_ids)
+        available_weights = [self.weights[i] for i in available_indices]
+
+        # Resample taking into account already sampled ids
+        new_samples = torch.multinomial(torch.as_tensor(available_weights), len(available_indices), self.replacement, generator=self.generator)
+        new_list = [available_indices[i] for i in new_samples.tolist()]
+        self.pos = len(self.sampled_ids)
+        self.rand_list[self.pos:] = new_list
+        assert len(self.rand_list) == len(new_weights)
+
+
+class SFT_data(torch.utils.data.Dataset):
+    def __init__(self, config, tokenizer):
+        self.config = config
+        self.tokenizer = tokenizer
+        with open(config.data_path) as f:
+            self.data_dict = json.load(f)
+        self.datacollatorforseq2seq = transformers.DataCollatorForSeq2Seq(tokenizer, return_tensors="pt", padding=True)
+        self.ignore_index = -100
+        self.sep = '\n'
+        self.sep_ids = self.tokenizer.encode(self.sep, add_special_tokens= False)
+        self.roles = ('User:','Assistant:')
+        self.ignore_len = len(self.tokenizer.encode(self.sep + self.roles[1],add_special_tokens= False))
+        self.debug = True
+
+        self.lengths = {k: len(self.data_dict[k]) for k in self.data_dict.keys()}
+        self.keys = list(self.data_dict.keys())
+        
+        self.languages_38 = [
+            "ckb", "mg", "gn", "gl", "gd", "cs", "co", "ln", "ceb", "lb", "la", "uk", "bs", "bm", "bg",
+            "eo", "mai", "sw", "su", "sr", "sq", "sk", "da", "ilo", "sa", "doi", "nso", "ig", "rw", "no",
+            "hr", "ha", "mt", "vi", "lo", "ne", "he", 'th'
+        ]
+        self.language_ids={'zh': 0, 'ko': 1, 'ja': 1, 'ne': 1, 'th': 2, 'vi': 2, 'lo': 2, 'mg': 3, 'ceb': 3, 'su': 3, 'ilo': 3, 'doi': 3, 'en': 4, 'de': 4, 'pt': 4, 'es': 4, 'fr': 4, 'ru': 4, 'hi': 4, 'it': 4, 'hr': 4, 'gl': 4, 'cs': 4, 'co': 4, 'lb': 4, 'la': 4, 'uk': 4, 'bs': 4, 'bg': 4, 'eo': 4, 'mai': 4, 'sr': 4, 'sq': 4, 'sk': 4, 'da': 4, 'sa': 4, 'no': 4, 'gn': 4, 'gd': 4, 'ar': 5, 'ckb': 5, 'mt': 5, 'he': 5, 'ln': 6, 'bm': 6, 'sw': 6, 'nso': 6, 'ig': 6, 'rw': 6, 'ha': 6}
+        
+        # you need to set
+        # When you want random sampling, please set the same data priority
+        self.data_priority = {
+            'medicalBook_en_qa': 16,
+            'medicalBook_ko_qa': 16,
+            'medicalBook_ru_qa': 16,
+            'medicalBook_zh_qa': 16,
+            'medicalGuideline_de_qa': 16,
+            'medicalGuideline_en_qa': 16,
+            'medicalGuideline_es_qa': 16,
+            'medicalGuideline_fr_qa': 16,
+            'medicalGuideline_ko_qa': 16,
+            'medicalGuideline_zh_qa': 16,
+            'medicalPaper_de_qa': 16,
+            'medicalPaper_en_qa': 16,
+            'medicalPaper_es_qa': 16,
+            'medicalPaper_fr_qa': 16,
+            'medicalPaper_ru_qa': 16,
+            'medicalPaper_zh_qa': 16,
+            'medicalWeb_de_qa': 16,
+            'medicalWeb_en_qa' :16,
+            'medicalWeb_es_qa' :16,
+            'medicalWeb_it_qa' :16,
+            'medicalWeb_ja_qa' :16,
+            'medicalWeb_ko_qa' :16,
+            'medicalWeb_pt_qa' :16,
+            'medicalWeb_ru_qa' :16,
+            'medicalWeb_zh_qa' :16,
+            'medicalWiki_zh_qa': 16,
+            'medicalWiki_ar_qa': 16,
+            'medicalWiki_de_qa': 16,
+            'medicalWiki_en_qa': 16,
+            'medicalWiki_es_qa': 16,
+            'medicalWiki_fr_qa': 16,
+            'medicalWiki_hi_qa': 16,
+            'medicalWiki_it_qa': 16,
+            'medicalWiki_ja_qa': 16,
+            'medicalWiki_ko_qa': 16,
+            'medicalWiki_pt_qa': 16,
+            'medicalWiki_ru_qa': 16,
+            'medicalExam_de': 2,
+            'medicalExam_en': 2,
+            'medicalExam_zh': 2,
+            'medicalExam_fr': 2,
+            'medicalExam_es': 2,
+            'medicalExam_it': 2,
+            'medicalExam_ja': 2,
+            'medicalExam_ko': 2,
+            'medicalExam_ru': 2,
+            'medicalPatient_ar': 2,
+            'medicalPatient_en': 2,
+            'medicalPatient_it': 2,
+            'medicalPatient_ja': 2,
+            'medicalPatient_ko': 2,
+            'medicalPatient_pt': 2,
+            'medicalPatient_zh': 2,
+            'medicalPatient_ru': 2,
+            'general_hi': 2,
+            'general_fr': 2,
+            'general_es': 2,
+            'general_en': 2,
+            'general_zh': 2,
+            'general_it': 2,
+            'general_ja': 2,
+            'general_ko': 2,
+            'general_pt': 2,
+            'general_de': 2,
+            'general_ar': 2,
+            'general_ru': 2,
+            'code_en': 2,
+            'code_zh': 2,
+            'math_en': 2,
+            'math_zh': 2,
+        }
+        
+        self.data_epoch = {
+            'medicalBook_en_qa': 1,
+            'medicalBook_ko_qa': 1,
+            'medicalBook_ru_qa': 1,
+            'medicalBook_zh_qa': 1,
+            'medicalGuideline_de_qa': 1,
+            'medicalGuideline_en_qa': 1,
+            'medicalGuideline_es_qa': 1,
+            'medicalGuideline_fr_qa': 1,
+            'medicalGuideline_ko_qa': 1,
+            'medicalGuideline_zh_qa': 1,
+            'medicalPaper_de_qa': 1,
+            'medicalPaper_en_qa': 1,
+            'medicalPaper_es_qa': 1,
+            'medicalPaper_fr_qa': 1,
+            'medicalPaper_ru_qa': 1,
+            'medicalPaper_zh_qa': 1,
+            'medicalWeb_de_qa': 1,
+            'medicalWeb_en_qa' :1,
+            'medicalWeb_es_qa' :1,
+            'medicalWeb_it_qa' :1,
+            'medicalWeb_ja_qa' :1,
+            'medicalWeb_ko_qa' :1,
+            'medicalWeb_pt_qa' :1,
+            'medicalWeb_ru_qa' :1,
+            'medicalWeb_zh_qa' :1,
+            'medicalWiki_zh_qa': 1,
+            'medicalWiki_ar_qa': 1,
+            'medicalWiki_de_qa': 1,
+            'medicalWiki_en_qa': 1,
+            'medicalWiki_es_qa': 1,
+            'medicalWiki_fr_qa': 1,
+            'medicalWiki_hi_qa': 1,
+            'medicalWiki_it_qa': 1,
+            'medicalWiki_ja_qa': 1,
+            'medicalWiki_ko_qa': 1,
+            'medicalWiki_pt_qa': 1,
+            'medicalWiki_ru_qa': 1,
+            'medicalExam_de': 2,
+            'medicalExam_en': 2,
+            'medicalExam_zh': 2,
+            'medicalExam_fr': 2,
+            'medicalExam_es': 2,
+            'medicalExam_it': 2,
+            'medicalExam_ja': 2,
+            'medicalExam_ko': 2,
+            'medicalExam_ru': 2,
+            'medicalPatient_ar': 2,
+            'medicalPatient_en': 2,
+            'medicalPatient_it': 2,
+            'medicalPatient_ja': 2,
+            'medicalPatient_ko': 2,
+            'medicalPatient_pt': 2,
+            'medicalPatient_zh': 2,
+            'medicalPatient_ru': 2,
+            'general_hi': 2,
+            'general_fr': 2,
+            'general_es': 2,
+            'general_en': 2,
+            'general_zh': 2,
+            'general_it': 2,
+            'general_ja': 2,
+            'general_ko': 2,
+            'general_pt': 2,
+            'general_de': 2,
+            'general_ar': 2,
+            'general_ru': 2,
+            'code_en': 2,
+            'code_zh': 2,
+            'math_en': 2,
+            'math_zh': 2,
+        }
+
+        for la in self.languages_38:
+            self.data_priority[f'general_{la}']=2
+            self.data_epoch[f'general_{la}']=2
+            self.data_priority[f'medicalExam_{la}']=2
+            self.data_epoch[f'medicalExam_{la}']=2
+
+        self.weights = []
+        self.pos_key = []
+        for keyi,key in enumerate(self.keys):
+            priority = self.data_priority[key]
+            epoch = self.data_epoch[key]
+            self.weights += [priority] * int(self.lengths[key]*epoch)
+            self.pos_key += [keyi] * int(self.lengths[key]*epoch)
+    
+    def __getitem__(self, index):
+        key = self.keys[self.pos_key[index]]
+        sub_index = index % self.lengths[key]
+        da = self.preprocess(self.data_dict[key][sub_index])
+        da['data_type'] = key
+
+        la_id=key.split('_')[1]
+        da['language_ids']= self.language_ids[la_id]
+
+        return da
+
+    def get_data_info(self):
+        res = {}
+        total = 0
+        for k,v in self.data_epoch.items():
+            res[k] = self.lengths[k]*v
+            total += self.lengths[k]*v
+        res['sum'] = total
+        return res
+
+    def preprocess(self, data):
+        input_ids = []
+        labels = []
+        if not isinstance(data, list):
+            raise ValueError('The data must be a list.')
+        for ind, d in enumerate(data):
+            if ind % 2 == 1:
+                value_ids = self.tokenizer.encode(self.sep + self.roles[1] + d,add_special_tokens= False, max_length=self.config.max_seq_len, truncation=True)
+                input_ids += value_ids
+                labels += [self.ignore_index] *self.ignore_len + value_ids[self.ignore_len:]
+                if len(labels) >= self.config.max_seq_len:
+                    break
+            else:
+                pre_str = self.sep if len(input_ids) > 0 else ''
+                value_ids = self.tokenizer.encode(pre_str + self.roles[0] + d,add_special_tokens= False, max_length=self.config.max_seq_len, truncation=True)
+                input_ids += value_ids
+                if len(labels) > 0:
+                    labels += [self.tokenizer.eos_token_id] + [self.ignore_index] * (len(value_ids)-1)
+                else:
+                    labels += [self.ignore_index] * len(value_ids)
+        input_ids.append(self.tokenizer.eos_token_id)
+        labels.append(self.tokenizer.eos_token_id)
+        # if self.debug:
+        #     print('input_ids',self.tokenizer.decode(input_ids))
+        #     labels = [item if item != self.ignore_index else self.tokenizer.pad_token_id for item in labels]
+        #     print('labels',self.tokenizer.decode(labels))
+        #     self.debug = False
+        return {'input_ids': input_ids[:self.config.max_seq_len], 'labels': labels[:self.config.max_seq_len]}
+
+    def __len__(self):
+        return len(self.weights)
+
+    def sample_num(self):
+        return len(self.weights)
+
+    def collate_fn(self, batch):
+        return batch
+
+
+def preprocess(args):
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True, pad_token='<|endoftext|>', eos_token='<|endoftext|>')
+    train_dataset = SFT_data(args, tokenizer)
+
+    sampler = WeightedRandomSampler(train_dataset.weights, num_samples=train_dataset.sample_num(), replacement=False)
+    train_dataloader = DataLoader(train_dataset, batch_size=args.train_bsz_per_gpu, sampler=sampler, drop_last=False, collate_fn=train_dataset.collate_fn, num_workers=64)
+    args.log_step = len(train_dataloader) // 30
+
+    from collections import defaultdict
+    key_nums = defaultdict(int)
+
+    wandb_path = os.path.join(args.wandb_log, args.experiment_name)
+    if not os.path.exists(wandb_path):
+        os.mkdir(wandb_path)
+    wandb.init(project = args.experiment_name, config=args, dir=wandb_path)
+
+    all_inputs_ids = []
+    all_labels = []
+    pad_id = tokenizer.pad_token_id
+    ignore_index = -100
+    # attention_mask:
+    #     The padding mask - corresponds to a tensor of size `(batch_size, seq_len)` where 0 stands for the
+    #     position of padding tokens and 1 for the position of non-padding tokens.
+    all_attention_mask=[]
+    all_language_ids=[]
+    for batch_cnt, batch in tqdm(enumerate(train_dataloader)):
+        cur_input = []
+        cur_label = []
+        cur_attention_mask=[]
+        cur_language_ids=[]
+        for da in batch:
+            key_nums[da['data_type']] += 1
+            if len(da['input_ids']) + len(cur_input) <= args.max_seq_len:
+                cur_input += da['input_ids']
+                cur_label += da['labels']
+                cur_attention_mask+=[1]*len(da['input_ids'])
+                cur_language_ids+=[da['language_ids']]*len(da['input_ids'])
+            else:
+                pad_len = args.max_seq_len - len(cur_input)
+
+                cur_input += [pad_id] * pad_len
+                cur_label += [ignore_index] * pad_len
+                cur_attention_mask+=[0]*pad_len
+                cur_language_ids+=[da['language_ids']]*pad_len
+
+                all_inputs_ids.append(cur_input)
+                all_labels.append(cur_label)
+                all_attention_mask.append(cur_attention_mask)
+                all_language_ids.append(cur_language_ids)
+
+                cur_input = da['input_ids']
+                cur_label = da['labels']
+                cur_attention_mask=[1]*len(da['input_ids'])
+                cur_language_ids= [da['language_ids']]*len(da['input_ids'])
+                
+        pad_len = args.max_seq_len - len(cur_input)
+        cur_input += [pad_id] * pad_len
+        cur_label += [ignore_index] * pad_len
+        cur_language_ids+=[da['language_ids']]*pad_len
+        cur_attention_mask+=[0]*pad_len
+        all_inputs_ids.append(cur_input)
+        all_labels.append(cur_label)
+        all_language_ids.append(cur_language_ids)
+        all_attention_mask.append(cur_attention_mask)
+        assert len(cur_input) == len(cur_label) ==len(cur_attention_mask)==len(cur_language_ids)== args.max_seq_len, f'{len(cur_input)},{len(cur_label)},{len(cur_attention_mask)},{len(cur_language_ids)}'
+
+        if batch_cnt % args.log_step == 0:
+            logdata = {}
+            for key in key_nums:
+                logdata[key + '_num'] = key_nums[key]
+            wandb.log(logdata)
+            key_nums = defaultdict(int)
+
+    assert len(all_inputs_ids) == len(all_labels) == len(all_language_ids)==len(all_attention_mask)
+    print(len(all_inputs_ids))
+    save_dataset = datasets.Dataset.from_dict({'input_ids': all_inputs_ids, 'labels':all_labels,'attention_mask':all_attention_mask,'language_ids':all_language_ids})
+    if not os.path.exists(args.save_path):
+        os.mkdir(args.save_path)
+    save_dataset.save_to_disk(args.save_path)
+
+    table = wandb.Table(columns=["data_priority", "data_epoch","data_num"])
+    table.add_data(json.dumps(train_dataset.data_priority,ensure_ascii=False,indent=2),json.dumps(train_dataset.data_epoch,ensure_ascii=False,indent=2),json.dumps(train_dataset.get_data_info(),ensure_ascii=False,indent=2))
+    wandb.log({"data_sample_info": table})
+    print(json.dumps(train_dataset.data_priority,ensure_ascii=False,indent=2),json.dumps(train_dataset.data_epoch,ensure_ascii=False,indent=2),json.dumps(train_dataset.get_data_info(),ensure_ascii=False,indent=2))
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Args of Data Preprocess')
+    # Model Args
+    parser.add_argument('--data_path', default='', type=str)
+    parser.add_argument('--model_path', default='', type=str)
+    parser.add_argument('--max_seq_len', default=4096, type=int)
+    parser.add_argument('--wandb_log', default='', type=str)
+    parser.add_argument('--train_bsz_per_gpu', default=256, type=int)
+    parser.add_argument('--experiment_name', default='', type=str)
+    parser.add_argument('--save_path', default='', type=str)
+    args = parser.parse_args()
+
+    preprocess(args)  

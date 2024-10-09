@@ -1,0 +1,56 @@
+{
+  "fr_source": [
+    "frenchmedmcqa",
+    "mmlu-medical-fr"
+  ],
+  "ko_source": [
+    "KorMedMCQA"
+  ],
+  "es_source": [
+    "headqa"
+  ],
+  "en_source": [
+    "medqa-usmle",
+    "pubmedqa",
+    "mmlu-medical",
+    "medmcqa"
+  ],
+  "zh_source": [
+    "cmb-single",
+    "medqa-mcmle",
+    "cmmlu-medical",
+    "cmexam"
+  ],
+  "ar_source": [
+    "mmlu-medical-ar"
+  ],
+  "pt_source": [
+    "MMLU_college_medicine_pt",
+    "MMLU_clinical_knowledge_pt",
+    "MMLU_professional_medicine_pt",
+    "MMLU_anatomy_pt",
+    "MMLU_college_biology_pt",
+    "MMLU_medical_genetics_pt"
+  ],
+  "ja_source": [
+    "IgakuQA"
+  ],
+  "de_source": [
+    "MMLU_anatomy_de",
+    "MMLU_professional_medicine_de",
+    "MMLU_college_medicine_de",
+    "MMLU_clinical_knowledge_de",
+    "MMLU_medical_genetics_de",
+    "MMLU_college_biology_de"
+  ],
+  "it_source": [
+    "MedExpQA",
+    "mmlu-medical-it"
+  ],
+  "ru_source": [
+    "RuMedDaNet"
+  ],
+  "hi_source": [
+    "mmlu-medical-hi"
+  ]
+}
