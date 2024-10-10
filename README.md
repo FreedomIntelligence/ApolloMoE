@@ -1,6 +1,4 @@
-# ApolloMoE
-
-# Multilingual Medicine: Model, Dataset, Benchmark, Code
+# ApolloMoE of Multilingual Medicine: Model, Dataset, Benchmark, Code
 
 Covering English, Chinese, French, Hindi, Spanish, Hindi, Arabic So far
 <center>
