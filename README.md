@@ -3,11 +3,11 @@
 Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
 <center>
 
+![Python 3.10](https://img.shields.io/badge/Python-3.10-lightblue) ![Pytorch 2.4.0](https://img.shields.io/badge/PyTorch-2.4.0-lightblue) ![transformers](https://img.shields.io/badge/transformers-4.45.1-lightblue) ![accelerate](https://img.shields.io/badge/accelerate-0.33-lightblue)
+
+
 ![ApolloMoE](assets/apollo_medium_final.png)
 
-
-![Python 3.10](https://img.shields.io/badge/Python-3.10-lightblue) ![Pytorch 2.4.0](https://img.shields.io/badge/PyTorch-2.4.0-lightblue) ![transformers](https://img.shields.io/badge/transformers-4.45.1-lightblue) ![accelerate](https://img.shields.io/badge/accelerate-0.33-lightblue)
-</center>
 
 
 
