@@ -13,7 +13,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    <br>  <a href="./README_zh.md"> 中文 </a> | <a href="./README.md"> English
 </p>
 
-![Apollo](assets/apollo_medium_final.png)
+![ApolloMoE](assets/apollo_medium_final.png)
 
 ## 🌈 Update
 
@@ -24,12 +24,12 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ### Dense
    🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B" target="_blank">Apollo-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-1.8B" target="_blank">Apollo-1.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B" target="_blank">Apollo-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B" target="_blank">Apollo-3.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-9B</a>  
 
-   ![Apollo](assets/dense results.png)
+   ![ApolloMoE](assets/dense results.png)
 
 ### Post-MoE
    🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-7B</a>  
 
-   ![Apollo](assets/post-MoE results.png)
+   ![ApolloMoE](assets/post-MoE results.png)
 
    
    
@@ -51,7 +51,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
    <details><summary>Click to expand</summary>
 
-    ![Apollo](assets/dataset.png)
+    ![ApolloMoE](assets/Dataset.png)
 
     - [Zip File](https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus/blob/main/ApolloCorpus.zip)
     - [Data category](https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus/tree/main/train)
