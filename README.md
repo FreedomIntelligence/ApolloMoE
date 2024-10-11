@@ -3,6 +3,9 @@
 Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
 <center>
 
+![ApolloMoE](assets/apollo_medium_final.png)
+
+
 ![Python 3.10](https://img.shields.io/badge/Python-3.10-lightblue) ![Pytorch 2.4.0](https://img.shields.io/badge/PyTorch-2.4.0-lightblue) ![transformers](https://img.shields.io/badge/transformers-4.45.1-lightblue) ![accelerate](https://img.shields.io/badge/accelerate-0.33-lightblue)
 </center>
 
@@ -13,7 +16,6 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    <br>  <a href="./README_zh.md"> 中文 </a> | <a href="./README.md"> English
 </p>
 
-![ApolloMoE](assets/apollo_medium_final.png)
 
 ## 🌈 Update
 
@@ -132,15 +134,15 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
      - AR: [MMLU_AR](https://huggingface.co/datasets/FreedomIntelligence/MMLU_Arabic)
         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
-     - JA [IgakuQA](https://github.com/jungokasai/IgakuQA)
-     - KO [KorMedMCQA](https://huggingface.co/datasets/sean0042/KorMedMCQA)
-     - It
+     - JA: [IgakuQA](https://github.com/jungokasai/IgakuQA)
+     - KO: [KorMedMCQA](https://huggingface.co/datasets/sean0042/KorMedMCQA)
+     - It:
        - [MedExpQA](https://huggingface.co/datasets/HiTZ/MedExpQA)
        - [MMLU_IT]
          - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
-     - DE [BioInstructQA](https://huggingface.co/datasets/BioMistral/BioInstructQA)
-     - PT [BioInstructQA](https://huggingface.co/datasets/BioMistral/BioInstructQA)
-     - RU [RuMedBench](https://github.com/sb-ai-lab/MedBench)
+     - DE: [BioInstructQA](https://huggingface.co/datasets/BioMistral/BioInstructQA): German part
+     - PT: [BioInstructQA](https://huggingface.co/datasets/BioMistral/BioInstructQA): Portuguese part
+     - RU: [RuMedBench](https://github.com/sb-ai-lab/MedBench)
 
       
       
