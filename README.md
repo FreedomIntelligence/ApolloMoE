@@ -22,17 +22,43 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 * **[2024.10.11]** ApolloMoE repo is published！🎉
 
 
+## Architecture
+
+<details>
+  <summary>Click to view the architecture image</summary>
+
+  ![ApolloMoE](/assets/post_moe_architecture.png)
+
+</details>
+
+
+<details>
+  <summary>Click to view the MoE routing image</summary>
+
+  ![ApolloMoE](/assets/hybrid_routing.png)
+
+</details>
+
 ## Results
 ### Dense
    🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B" target="_blank">Apollo-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-1.8B" target="_blank">Apollo-1.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B" target="_blank">Apollo-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B" target="_blank">Apollo-3.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-9B</a>  
-
+   
+<details>
+  <summary>Click to view the Dense Models Results</summary>
+   
    ![ApolloMoE](assets/dense_results.png)
+
+</details>
 
 ### Post-MoE
    🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-7B</a>  
+   
+<details>
+  <summary>Click to view the Post-MoE Models Results</summary>
+   
+   ![ApolloMoE](assets/post_moe_results.png)
 
-   ![ApolloMoE](assets/post_MoE_results.png)
-
+</details>
    
    
    
@@ -136,7 +162,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
      - JA: [IgakuQA](https://github.com/jungokasai/IgakuQA)
      - KO: [KorMedMCQA](https://huggingface.co/datasets/sean0042/KorMedMCQA)
-     - It:
+     - IT:
        - [MedExpQA](https://huggingface.co/datasets/HiTZ/MedExpQA)
        - [MMLU_IT]
          - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
