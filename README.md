@@ -41,7 +41,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ## Usage Format
 
 - 0.5B, 1.5B, 7B: User:{query}\nAssistant:{response}<|endoftext|>
-- 2B, 9B: User:{query}\nAssistant:{response}<eos><eos>
+- 2B, 9B: User:{query}\nAssistant:{response}\<eos\>
 - 3.8B: <|user|>\n{query}<|end|><|assisitant|>\n{response}<|end|>
 
 ## Dataset & Evaluation
