@@ -24,12 +24,12 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ### Dense
    🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B" target="_blank">Apollo-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-1.8B" target="_blank">Apollo-1.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B" target="_blank">Apollo-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B" target="_blank">Apollo-3.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-9B</a>  
 
-   ![ApolloMoE](assets/dense results.png)
+   ![ApolloMoE](assets/dense_results.png)
 
 ### Post-MoE
    🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-7B</a>  
 
-   ![ApolloMoE](assets/post-MoE results.png)
+   ![ApolloMoE](assets/post_MoE_results.png)
 
    
    
@@ -41,7 +41,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ## Usage Format
 
 - 0.5B, 1.5B, 7B: User:{query}\nAssistant:{response}<|endoftext|>
-- 2B, 9B: User:{query}\nAssistant:{response}<eos>
+- 2B, 9B: User:{query}\nAssistant:{response}<eos><eos>
 - 3.8B: <|user|>\n{query}<|end|><|assisitant|>\n{response}<|end|>
 
 ## Dataset & Evaluation
@@ -124,11 +124,26 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
 
      - ES: [Head_qa](https://huggingface.co/datasets/head_qa)
-     - FR: [Frenchmedmcqa](https://github.com/qanastek/FrenchMedMCQA)
-     - HI: [MMLU_HI](https://huggingface.co/datasets/FreedomIntelligence/MMLU_Arabic)
+     - FR:
+       - [Frenchmedmcqa](https://github.com/qanastek/FrenchMedMCQA)
+       - [MMLU_FR]
+         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
+     - HI: [MMLU_HI](https://huggingface.co/datasets/FreedomIntelligence/MMLU_Hindi)
         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
-     - AR: [MMLU_Ara](https://huggingface.co/datasets/FreedomIntelligence/MMLU_Hindi)
+     - AR: [MMLU_AR](https://huggingface.co/datasets/FreedomIntelligence/MMLU_Arabic)
         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
+     - JA [IgakuQA](https://github.com/jungokasai/IgakuQA)
+     - KO [KorMedMCQA](https://huggingface.co/datasets/sean0042/KorMedMCQA)
+     - It
+       - [MedExpQA](https://huggingface.co/datasets/HiTZ/MedExpQA)
+       - [MMLU_IT]
+         - Clinical knowledge, Medical genetics, Anatomy, Professional medicine, College biology, College medicine
+     - DE [BioInstructQA](https://huggingface.co/datasets/BioMistral/BioInstructQA)
+     - PT [BioInstructQA](https://huggingface.co/datasets/BioMistral/BioInstructQA)
+     - RU [RuMedBench](https://github.com/sb-ai-lab/MedBench)
+
+      
+      
 
 
    </details>
