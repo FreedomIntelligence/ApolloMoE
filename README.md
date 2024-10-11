@@ -1,6 +1,6 @@
 # ApolloMoE of Multilingual Medicine: Model, Dataset, Benchmark, Code
 
-Covering English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
+Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
 <center>
 
 ![Python 3.10](https://img.shields.io/badge/Python-3.10-lightblue) ![Pytorch 2.4.0](https://img.shields.io/badge/PyTorch-2.4.0-lightblue) ![transformers](https://img.shields.io/badge/transformers-4.45.1-lightblue) ![accelerate](https://img.shields.io/badge/accelerate-0.33-lightblue)
@@ -17,29 +17,32 @@ Covering English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Ko
 
 ## 🌈 Update
 
-* **[2024.04.25]** [MedJamba](https://huggingface.co/FreedomIntelligence/Apollo-MedJamba) released, train and evaluation code refer to [repo](https://github.com/FreedomIntelligence/MedJamba).
-* **[2024.03.07]** [Paper](https://arxiv.org/abs/2403.03640) released.
-* **[2024.02.12]** <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus" target="_blank">ApolloCorpus</a> and  <a href="https://huggingface.co/datasets/FreedomIntelligence/XMedbench" target="_blank">XMedBench</a>  is published！🎉
 * **[2024.10.11]** ApolloMoE repo is published！🎉
 
 
 ## Results
-   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B" target="_blank">Apollo-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-1.8B" target="_blank">Apollo-1.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B" target="_blank">Apollo-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B" target="_blank">Apollo-6B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-34B" target="_blank">Apollo-34B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-72B" target="_blank">Apollo-72B</a>  
-   
-   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-MedJamba" target="_blank">MedJamba</a>
+### Dense
+   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B" target="_blank">Apollo-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-1.8B" target="_blank">Apollo-1.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B" target="_blank">Apollo-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B" target="_blank">Apollo-3.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-9B</a>  
 
-   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B-GGUF" target="_blank">Apollo-0.5B-GGUF</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B-GGUF" target="_blank">Apollo-2B-GGUF</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B-GGUF" target="_blank">Apollo-6B-GGUF</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B-GGUF" target="_blank">Apollo-7B-GGUF</a> 
+   ![Apollo](assets/dense results.png)
+
+### Post-MoE
+   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-7B</a>  
+
+   ![Apollo](assets/post-MoE results.png)
+
    
    
    
-   ![Apollo](assets/result.png)
+
       
    
 
 ## Usage Format
 
-- 0.5B, 1.8B, 2B, 6B, 7B: User:{query}\nAssistant:{response}<|endoftext|>
-- 34B, 72B: <|User|>:{query}\n<|Assistant|>:{response}<|endoftext|>
+- 0.5B, 1.5B, 7B: User:{query}\nAssistant:{response}<|endoftext|>
+- 2B, 9B: User:{query}\nAssistant:{response}<eos>
+- 3.8B: <|user|>\n{query}<|end|><|assisitant|>\n{response}<|end|>
 
 ## Dataset & Evaluation
 
@@ -172,18 +175,14 @@ Covering English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Ko
        bash 3.single_node_train_gemma.sh
        ```
 
-   5. (Optional) Proxy-Tuning: Directly improve model capabilities without fine-tuning
 
-       ```
-         bash src/proxy-tuning/scripts/eval/proxy_tuning.sh
-       ```
-   6. Evaluate your model: Generate score for benchmark
+   5. Evaluate your model: Generate score for benchmark
       
          ```
          bash 4.eval.sh
          ```
 
-   7. Evaluate your model: Play with your ckpts in bash
+   6. Evaluate your model: Play with your ckpts in bash
     
          ```
          python ./src/evaluate/cli_demo.py --model_name='./ckpts/your/path/tfmr'
@@ -195,20 +194,13 @@ Covering English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Ko
 ##  Acknowledgment
 
 - [HuatuoGPT-II](https://github.com/FreedomIntelligence/HuatuoGPT-II)
-- [proxy-tuning](https://github.com/alisawuffles/proxy-tuning)
+
 
 ##  Citation
 Please use the following citation if you intend to use our dataset for training or evaluation:
 
 ```
-@misc{wang2024apollo,
-   title={Apollo: Lightweight Multilingual Medical LLMs towards Democratizing Medical AI to 6B People},
-   author={Xidong Wang and Nuo Chen and Junyin Chen and Yan Hu and Yidong Wang and Xiangbo Wu and Anningzhe Gao and Xiang Wan and Haizhou Li and Benyou Wang},
-   year={2024},
-   eprint={2403.03640},
-   archivePrefix={arXiv},
-   primaryClass={cs.CL}
-}
+
 ```
 
 ## Star History
