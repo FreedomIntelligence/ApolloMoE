@@ -1,4 +1,4 @@
-# ApolloMoE: Efficiently Democratizing Medical LLMs for 50 Languages via a Mixture of Language Family Experts
+# ApolloMoE: Democratizing Medical LLMs for 50 Languages
 
 Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
 <center>
