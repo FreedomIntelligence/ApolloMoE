@@ -1,4 +1,4 @@
-# Democratizing Medical LLMs for Much more Languages
+# Democratizing Medical LLMs For Much More Languages
 
 Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
 <center>
