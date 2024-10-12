@@ -10,8 +10,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 </p>
 
 ## To do 
-
-
+- Models, Dataset and Evaluation Set up is up-coming.
 
 ## 🌈 Update
 
