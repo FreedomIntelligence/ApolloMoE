@@ -1,36 +1,24 @@
-# ApolloMoE of Multilingual Medicine: Model, Dataset, Benchmark, Code
+# ApolloMoE: Efficiently Democratizing Medical LLMs for 50 Languages via a Mixture of Language Family Experts
 
 Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, Arabic, Russian, Japanese, Korean, German, Italian, Portuguese and 38 Minor Languages So far.
 <center>
 
-![Python 3.10](https://img.shields.io/badge/Python-3.10-lightblue) ![Pytorch 2.4.0](https://img.shields.io/badge/PyTorch-2.4.0-lightblue) ![transformers](https://img.shields.io/badge/transformers-4.45.1-lightblue) ![accelerate](https://img.shields.io/badge/accelerate-0.33-lightblue)
-
-
-![ApolloMoE](assets/apollo_medium_final.png)
-
-
 
 
 <p align="center">
-   📃 <a href="https://arxiv.org/abs/2403.03640" target="_blank">Paper</a> • 🌐 <a href="https://apollo.llmzoo.com/" target="_blank">Demo</a> • 🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus" target="_blank">ApolloCorpus</a> • 🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/XMedbench" target="_blank">XMedBench</a> 
-   <br>  <a href="./README_zh.md"> 中文 </a> | <a href="./README.md"> English
+   📃 <a href="" target="_blank">Paper</a> • 🌐 <a href="" target="_blank">Demo</a> • 🤗 <a href="" target="_blank">ApolloMoEDataset</a> • 🤗 <a href="" target="_blank">Model</a>
 </p>
+
+## To do 
+
 
 
 ## 🌈 Update
 
-* **[2024.10.11]** ApolloMoE repo is published！🎉
+* **[2024.10.12]** ApolloMoE repo is published！🎉
 
 
 ## Architecture
-
-<details>
-  <summary>Click to view the architecture image</summary>
-
-  ![ApolloMoE](/assets/post_moe_architecture.png)
-
-</details>
-
 
 <details>
   <summary>Click to view the MoE routing image</summary>
@@ -40,8 +28,9 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 </details>
 
 ## Results
+
 ### Dense
-   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-0.5B" target="_blank">Apollo-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-1.8B" target="_blank">Apollo-1.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-2B" target="_blank">Apollo-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-6B" target="_blank">Apollo-3.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-9B</a>  
+   🤗 <a href="" target="_blank">Apollo2-0.5B</a> • 🤗 <a href="" target="_blank">Apollo2-1.5B</a> • 🤗 <a href="" target="_blank">Apollo2-2B</a>  • 🤗 <a href="" target="_blank">Apollo2-3.8B</a> • 🤗 <a href="" target="_blank">Apollo2-7B</a>  • 🤗 <a href="" target="_blank">Apollo2-9B</a>  
    
 <details>
   <summary>Click to view the Dense Models Results</summary>
@@ -51,7 +40,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 </details>
 
 ### Post-MoE
-   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-7B" target="_blank">Apollo-MoE-7B</a>  
+   🤗 <a href="" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="" target="_blank">Apollo-MoE-7B</a>  
    
 <details>
   <summary>Click to view the Post-MoE Models Results</summary>
@@ -75,57 +64,13 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ## Dataset & Evaluation
 
 - Dataset
-  🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus" target="_blank">ApolloCorpus
+  🤗 <a href="" target="_blank">ApolloMoEDataset</a>
 
    <details><summary>Click to expand</summary>
 
     ![ApolloMoE](assets/Dataset.png)
 
-    - [Zip File](https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus/blob/main/ApolloCorpus.zip)
     - [Data category](https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus/tree/main/train)
-       - Pretrain:
-         - data item:
-            - json_name: {data_source}_{language}_{data_type}.json
-            - data_type: medicalBook, medicalGuideline, medicalPaper, medicalWeb(from online forum), medicalWiki
-            - language: en(English), zh(chinese), es(spanish), fr(french), hi(Hindi)
-            - data_type: qa(generated qa from text)
-            - data_type==text: list of string
-              ```
-              [
-                "string1",
-                "string2",
-                ...
-              ]
-              ```
-            - data_type==qa: list of qa pairs(list of string)
-              ```
-              [
-                [
-                  "q1",
-                  "a1",
-                  "q2",
-                  "a2",
-                  ...
-                ],
-                ...
-              ]
-              ```
-      - SFT:
-          - json_name: {data_source}_{language}.json
-          - data_type: code, general, math, medicalExam, medicalPatient
-          - data item: list of qa pairs(list of string)
-            ```
-              [
-                [
-                  "q1",
-                  "a1",
-                  "q2",
-                  "a2",
-                  ...
-                ],
-                ...
-              ]
-              ```
 
 
    </details>
@@ -234,10 +179,6 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    </details>
 
 
-##  Acknowledgment
-
-- [HuatuoGPT-II](https://github.com/FreedomIntelligence/HuatuoGPT-II)
-
 
 ##  Citation
 Please use the following citation if you intend to use our dataset for training or evaluation:
@@ -245,14 +186,4 @@ Please use the following citation if you intend to use our dataset for training 
 ```
 
 ```
-
-## Star History
-
-<a href="https://star-history.com/#FreedomIntelligence/Apollo&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=FreedomIntelligence/Apollo&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=FreedomIntelligence/Apollo&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=FreedomIntelligence/Apollo&type=Date" />
-  </picture>
-</a>
 
