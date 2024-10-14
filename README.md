@@ -29,7 +29,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ## Results
 
 ### Dense
-   🤗 <a href="" target="_blank">Apollo2-0.5B</a> • 🤗 <a href="" target="_blank">Apollo2-1.5B</a> • 🤗 <a href="" target="_blank">Apollo2-2B</a>  • 🤗 <a href="" target="_blank">Apollo2-3.8B</a> • 🤗 <a href="" target="_blank">Apollo2-7B</a>  • 🤗 <a href="" target="_blank">Apollo2-9B</a>  
+   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo2-0.5B" target="_blank">Apollo2-0.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo2-1.5B" target="_blank">Apollo2-1.5B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo2-2B" target="_blank">Apollo2-2B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo2-3.8B" target="_blank">Apollo2-3.8B</a> • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo2-7B" target="_blank">Apollo2-7B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo2-9B" target="_blank">Apollo2-9B</a>  
    
 <details>
   <summary>Click to view the Dense Models Results</summary>
@@ -66,7 +66,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ## Dataset & Evaluation
 
 - Dataset
-  🤗 <a href="" target="_blank">ApolloMoEDataset</a>
+  🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEDataset" target="_blank">ApolloMoEDataset</a>
 
    <details><summary>Click to expand</summary>
 
@@ -78,7 +78,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    </details>
    
 - Evaluation
-  🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/XMedbench" target="_blank">XMedBench</a> 
+  🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEBench" target="_blank">ApolloMoEBench</a> 
 
    <details><summary>Click to expand</summary>
       
