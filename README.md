@@ -133,17 +133,17 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    <details><summary>Click to expand</summary>
 
    
-   We take Gemma-2b as example
+   We take Apollo2-7B or Apollo-MoE-0.5B as example
    1. Download Dataset for project:
 
       ```
       bash 0.download_data.sh  
       ```
     
-   2. Prepare test and dev for specific model:
+   2. Prepare test and dev data for specific model:
 
       
-      - Create test data for with special token, you can use ./util/check.ipynb to check models' special tokens
+      - Create test data for with special token
         
        ```
        bash 1.data_process_test&dev.sh
@@ -161,13 +161,11 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    4. Train the model
 
     
-      - If you want to train in Multi Nodes please refer to ./scripts/multi_node_train_*.sh
-
-
+      - If you want to train in Multi Nodes please refer to ./src/sft/training_config/zero_multi.yaml
 
 
        ```
-       bash 3.single_node_train_gemma.sh
+       bash 3.single_node_train.sh
        ```
 
 
@@ -177,12 +175,6 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
          bash 4.eval.sh
          ```
 
-   6. Evaluate your model: Play with your ckpts in bash
-    
-         ```
-         python ./src/evaluate/cli_demo.py --model_name='./ckpts/your/path/tfmr'
-         ```
-   
    </details>
 
 
