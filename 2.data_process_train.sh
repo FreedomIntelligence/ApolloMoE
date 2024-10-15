@@ -1,4 +1,3 @@
-
 experiment_name=Qwen2-7B_Prodata
 log_folder=./logs/${experiment_name}
 mkdir -p $log_folder
@@ -13,7 +12,7 @@ python /path/to/src/prepare/data_process_train_prodata_qwen2.py \
     --experiment_name ${experiment_name} \
     --save_path ./data/${experiment_name}/Mixtrain_Prodata > ${log_folder}/$log_name 2>&1 &
 
-
+##########################################################################
 experiment_name=Apollo-MoE-0.5B_Prodata
 log_folder=./logs/${experiment_name}
 mkdir -p $log_folder
