@@ -1,5 +1,3 @@
-
-
  experiment_name=Qwen2-7B_Test
  log_folder="./logs/${experiment_name}"
  result_folder="./results/${experiment_name}"
