@@ -6,7 +6,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
 
 <p align="center">
-   📃 <a href="https://arxiv.org/abs/2410.10626" target="_blank">Paper</a> • 🌐 <a href="" target="_blank">Demo</a> • 🤗 <a href="" target="_blank">ApolloMoEDataset</a> • 🤗 <a href="" target="_blank">Model</a>
+   📃 <a href="https://arxiv.org/abs/2410.10626" target="_blank">Paper</a> • 🌐 <a href="" target="_blank">Demo</a> • 🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEDataset" target="_blank">ApolloMoEDataset</a> • 🤗 <a href="" target="_blank">Model</a>
 </p>
 
 ## To do 
@@ -39,7 +39,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 </details>
 
 ### Post-MoE
-   🤗 <a href="" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="" target="_blank">Apollo-MoE-7B</a>  
+   🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-MoE-0.5B" target="_blank">Apollo-MoE-0.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-MoE-1.5B" target="_blank">Apollo-MoE-1.5B</a>  • 🤗 <a href="https://huggingface.co/FreedomIntelligence/Apollo-MoE-7B" target="_blank">Apollo-MoE-7B</a>  
    
 <details>
   <summary>Click to view the Post-MoE Models Results</summary>
