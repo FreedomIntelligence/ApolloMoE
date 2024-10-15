@@ -1,9 +1,8 @@
-
  process_port=29503
- experiment_name=Qwen2-7B_train
- model_dir=/path/to/Qwen2-7B
- train_data_file=/path/to/Qwen2-7B_Prodata/Mixtrain_Prodata
- dev_data_file=/path/to/Qwen2-7B_Prodata/dev.json
+ experiment_name=Apollo2-7B_train
+ model_dir=/path/to/Qwen2-7B-Base
+ train_data_file=/path/to/Apollo2-7B_Prodata/Mixtrain_Prodata
+ dev_data_file=/path/to/Apollo2-7B_Prodata/dev.json
  output_dir=/path/to/ckpts
  log_folder=/path/to/logs/${experiment_name}
  mkdir -p $log_folder
@@ -38,8 +37,8 @@
  process_port=29502
  experiment_name=Apollo-MoE-0.5B_train
  model_dir=/path/to/Apollo-MoE-0.5B-Base
- train_data_file=/path/to/Post-MoE-Qwen2-0.5B_Prodata/Mixtrain_Prodata
- dev_data_file=/path/to/Post-MoE-Qwen2-0.5B_Prodata/dev.json
+ train_data_file=/path/to/Apollo2-MoE-0.5B_Prodata/Mixtrain_Prodata
+ dev_data_file=/path/to/Apollo2-MoE-0.5B_Prodata/dev.json
  output_dir=/path/to/ckpts
  log_folder=/path/to/logs/${experiment_name}
  mkdir -p $log_folder
