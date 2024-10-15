@@ -6,7 +6,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
 
 <p align="center">
-   📃 <a href="" target="_blank">Paper</a> • 🌐 <a href="" target="_blank">Demo</a> • 🤗 <a href="" target="_blank">ApolloMoEDataset</a> • 🤗 <a href="" target="_blank">Model</a>
+   📃 <a href="https://arxiv.org/abs/2410.10626" target="_blank">Paper</a> • 🌐 <a href="" target="_blank">Demo</a> • 🤗 <a href="" target="_blank">ApolloMoEDataset</a> • 🤗 <a href="" target="_blank">Model</a>
 </p>
 
 ## To do 
@@ -186,6 +186,14 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 Please use the following citation if you intend to use our dataset for training or evaluation:
 
 ```
-
+@misc{zheng2024efficientlydemocratizingmedicalllms,
+      title={Efficiently Democratizing Medical LLMs for 50 Languages via a Mixture of Language Family Experts}, 
+      author={Guorui Zheng and Xidong Wang and Juhao Liang and Nuo Chen and Yuping Zheng and Benyou Wang},
+      year={2024},
+      eprint={2410.10626},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2410.10626}, 
+}
 ```
 
