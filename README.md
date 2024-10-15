@@ -16,6 +16,17 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 * **[2024.10.15]** ApolloMoE repo is published！🎉
 
 
+## Languages Coverage
+12 Major Languages and 38 Minor Languages
+
+<details>
+  <summary>Click to view the Languages Coverage</summary>
+   
+   ![ApolloMoE](assets/languages.png)
+
+</details>
+
+
 ## Architecture
 
 <details>
@@ -46,12 +57,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    ![ApolloMoE](assets/post_moe_results.png)
 
 </details>
-   
-   
-   
 
-      
-   
 
 ## Usage Format
 #### Apollo2
@@ -61,7 +67,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
 #### Apollo-MoE
 - 0.5B, 1.5B, 7B: User:{query}\nAssistant:{response}<|endoftext|>
-  
+
 ## Dataset & Evaluation
 
 - Dataset
@@ -131,7 +137,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
    1. Download Dataset for project:
 
       ```
-      bash 0.download_data.sh
+      bash 0.download_data.sh  
       ```
     
    2. Prepare test and dev for specific model:
