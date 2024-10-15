@@ -1,4 +1,5 @@
-experiment_name=Qwen2-7B_Prodata
+#Train Data
+experiment_name=Apollo2-7B_Prodata
 log_folder=./logs/${experiment_name}
 mkdir -p $log_folder
 mkdir -p ./data/${experiment_name}
