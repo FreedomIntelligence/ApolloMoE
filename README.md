@@ -77,7 +77,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
     ![ApolloMoE](assets/Dataset.png)
 
-    - [Data category](https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus/tree/main/train)
+    - [Data category](https://huggingface.co/datasets/FreedomIntelligence/ApolloCorpus)
 
 
    </details>
