@@ -1,7 +1,3 @@
-source /sds_wangby/group_conda_envs/init.sh
-conda activate fapy310
-
-
 model=model_name
 log_folder=/path/to/your/logs
 log_name=$model.log
