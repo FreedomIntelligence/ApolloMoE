@@ -1,4 +1,4 @@
-#Train Data
+#train_data.json: MajorDataset.json or Minor Dataset.json or Both
 experiment_name=Apollo2-7B_Prodata
 log_folder=./logs/${experiment_name}
 mkdir -p $log_folder
