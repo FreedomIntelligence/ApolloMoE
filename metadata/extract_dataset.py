@@ -22,7 +22,7 @@ def extract(dataset_path,major_path,minor_path):
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser(description='Args of extracting dataset')
-    parser.add_argument('--dataset_path',type=str,default='/path/to/ApolloMoEDataset_0_1.json')
+    parser.add_argument('--dataset_path',type=str,default='/path/to/ApolloMoEDataset.json')
     parser.add_argument('--major_dataset_path',type=str,default='/path/to/MajorDataset.json')
     parser.add_argument('--minor_dataset_path',type=str,default='/path/to/MinorDataset.json')
     args=parser.parse_args()
