@@ -1,4 +1,4 @@
-
+#Extract ApollMoE Data to Major or Minor part
 python metadata/extract_dataset.py \
 --dataset_path /path/to/ApolloMoEDataset.json \
 --major_dataset_path /path/to/MajorDataset.json \
