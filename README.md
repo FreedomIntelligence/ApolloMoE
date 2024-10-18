@@ -81,7 +81,9 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
 
    </details>
-   
+
+
+   The complete data is stored in `ApolloMoEDataset.json`, while a sample shown in `ApolloMoEDataset_sample.json`
 - Evaluation
   🤗 <a href="https://huggingface.co/datasets/FreedomIntelligence/ApolloMoEBench" target="_blank">ApolloMoEBench</a> 
 
@@ -132,17 +134,22 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 ## Results reproduction
    <details><summary>Click to expand</summary>
 
+
    
    We take Apollo2-7B or Apollo-MoE-0.5B as example
-   1. Download Dataset for project:
+
+   
+   1. Download and extract data:
+      
+      - Dowload Dataset and Benchmark firstly
+      - Extract major or minor data part according to your needs:
+
 
       ```
-      bash 0.download_data.sh  
-      ```
+      bash 0.extract_data.sh
+      ```   
     
    2. Prepare test and dev data for specific model:
-
-      
       - Create test data for with special token
         
        ```
