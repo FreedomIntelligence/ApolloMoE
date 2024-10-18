@@ -1,4 +1,7 @@
 # Major and Minor Test Data for Apollo2 trained with Qwen2
+#test.json: MajorBench.json or MiniorBench.json
+#dev.json: sample 10% from test.json
+
 python ./src/prepare/data_process_test_qwen2.py \
  --data_path ./metadata/test.json \
  --few_shot 3 \
