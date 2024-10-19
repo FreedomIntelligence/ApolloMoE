@@ -1,4 +1,4 @@
-cd /path/to/src/proprcess/moe_initilization
+cd /path/to/moe_initilization
 
 #Initilization from Base model
 model=Model_Name
