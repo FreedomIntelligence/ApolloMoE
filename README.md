@@ -132,9 +132,25 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
    
 ## Results reproduction
+   
+   (Optional) Custom Model as Base
+   
+   <details><summary>Click to expand</summary>
+      
+   ```
+      copy /path/to/your/configuration_upcycling_qwen2_moe.py /path/to/src/variants/moe_initilization/configuration_upcycling_qwen2_moe.py
+      copy /path/to/your/modeling_upcycling_qwen2_moe.py /path/to/src/variants/moe_initilization/modeling_upcycling_qwen2_moe.py
+      cd /path/to/src/variants/moe_initilization
+      bash convert.sh
+   ```
+
+   </details>
+
+   Full-finetune on Base Model
+   
    <details><summary>Click to expand</summary>
 
-
+   
    
    We take Apollo2-7B or Apollo-MoE-0.5B as example
 
