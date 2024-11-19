@@ -132,7 +132,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
 
 ## Model Download and Inference
    We take Apollo-MoE-0.5B as an example
-   1. Login Hugginface
+   1. Login Huggingface
       
        ```
        huggingface-cli login --token $HUGGINGFACE_TOKEN
@@ -160,7 +160,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
       tokenizer = AutoTokenizer.from_pretrained(local_model_dir,trust_remote_code=True)
       generation_config = GenerationConfig.from_pretrained(local_model_dir, pad_token_id=tokenizer.pad_token_id, num_return_sequences=1, max_new_tokens=7, min_new_tokens=2, do_sample=False, temperature=1.0, top_k=50, top_p=1.0)
       
-      inputs = tokenizer('直接回答\n蒙古国的首都是乌兰巴托（Ulaanbaatar）\n冰岛的首都是雷克雅未克（Reykjavik）\n澳大利亚的首都是', return_tensors='pt')
+      inputs = tokenizer('Answer direclty.\nThe capital of Mongolia is Ulaanbaatar.\nThe capital of Iceland is Reykjavik.\nThe capital of Australia is', return_tensors='pt')
       inputs = inputs.to(model.device)
       pred = model.generate(**inputs,generation_config=generation_config)
       print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
