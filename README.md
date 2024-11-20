@@ -140,7 +140,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
        
    2. Download model to local dir
         
-       ```
+       ```python
        from huggingface_hub import snapshot_download
        import os
 
@@ -150,7 +150,7 @@ Covering 12 Major Languages including English, Chinese, French, Hindi, Spanish, 
        
    3. Inference Example
 
-      ```
+      ```python
       from transformers import AutoTokenizer, AutoModelForCausalLM, GenerationConfig
       import os
       
